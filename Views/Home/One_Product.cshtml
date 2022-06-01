@@ -1,0 +1,41 @@
+@model Market
+
+<h1>@ViewBag.OneProduct.Name</h1>
+<div class="row">
+    <div class="col-6">
+        <h3>Categories:</h3>
+        @foreach (Market l in ViewBag.OneProduct.CategoriesSoldIn)
+            {
+                <h4>@l.Category.Name</h4>
+            }
+    </div>
+    <dir class="col-6">
+        <form action="/market/add" method="post">
+            <input type="hidden" name="option" value="product">
+            <input type="hidden" asp-for="ProductId" value="@ViewBag.OneProduct.ProductId">
+            <div class="form-group">
+                <label for="CategoryId">Add Category:</label>
+                <select asp-for="CategoryId" class="form-control">
+                    @foreach (Category l in ViewBag.AllCategories)
+                    {
+                        bool found = false;
+                        foreach(Market a in ViewBag.OneProduct.CategoriesSoldIn)
+                        {
+                            if(a.CategoryId == l.CategoryId)
+                            {
+                                found = true;
+                            }
+                        }
+                        if(!found)
+                        {
+                            <option value="@l.CategoryId">@l.Name</option>
+                        }                        
+                    }
+                </select>
+            </div>
+            <div>
+                <input type="submit" value="Add" class="btn btn-primary">
+            </div>
+        </form>
+    </dir>
+</div>
